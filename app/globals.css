@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+:root {
+  --color-asphalt: #1a1a1d;
+  --color-asphalt-deep: #0e0e10;
+  --color-mustard: #c8862b;
+  --color-hoodie-brown: #7a4e23;
+  --color-hoodie-brown-dark: #5c3a19;
+  --color-chalk: #ede9e2;
+  --color-signal-red: #d6462f;
+}
+
+@theme inline {
+  --color-asphalt: var(--color-asphalt);
+  --color-asphalt-deep: var(--color-asphalt-deep);
+  --color-mustard: var(--color-mustard);
+  --color-hoodie-brown: var(--color-hoodie-brown);
+  --color-hoodie-brown-dark: var(--color-hoodie-brown-dark);
+  --color-chalk: var(--color-chalk);
+  --color-signal-red: var(--color-signal-red);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
+body {
+  background: var(--color-asphalt);
+  color: var(--color-chalk);
+  font-family: var(--font-body), system-ui, sans-serif;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(200, 134, 43, 0.08), transparent),
+    repeating-linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.015) 0px,
+      rgba(255, 255, 255, 0.015) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+}
+
+.font-display {
+  font-family: var(--font-display), sans-serif;
+}
+
+.font-mono {
+  font-family: var(--font-mono), monospace;
+}
+
+/* subtle asphalt scuff streaks - the signature texture element */
+.scuff-streaks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(100deg, transparent 20%, rgba(237, 233, 226, 0.025) 21%, transparent 23%),
+    linear-gradient(100deg, transparent 45%, rgba(237, 233, 226, 0.02) 46%, transparent 48%),
+    linear-gradient(100deg, transparent 68%, rgba(237, 233, 226, 0.03) 69%, transparent 71%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
