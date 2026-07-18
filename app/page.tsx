@@ -1,89 +1,60 @@
 "use client";
 
-import { usePrivy } from "@privy-io/react-auth";
-import Link from "next/link";
+import { useAuth } from "@/lib/auth";
 import Game from "@/components/Game";
-
-function shortenAddress(address: string) {
-  return `${address.slice(0, 6)}…${address.slice(-4)}`;
-}
+import { SketchPanel, SketchShell } from "@/components/SketchShell";
 
 export default function HomePage() {
-  const { ready, authenticated, user, login, logout } = usePrivy();
-
-  const embeddedWallet = user?.linkedAccounts.find(
-    (a) => a.type === "wallet" && (a as { walletClientType?: string }).walletClientType === "privy"
-  ) as { address?: string } | undefined;
-
-  const xAccount = user?.linkedAccounts.find((a) => a.type === "twitter_oauth") as
-    | { username?: string | null }
-    | undefined;
+  const { ready, authenticated, login, logout } = useAuth();
 
   return (
-    <div className="relative flex flex-1 flex-col items-center px-4 pb-16 pt-10">
-      <div className="scuff-streaks" />
-
-      <header className="relative z-10 flex w-full max-w-[400px] items-center justify-between">
-        <Link href="/leaderboard" className="font-mono text-xs text-chalk/50 underline-offset-4 hover:underline">
-          ledger →
-        </Link>
-        {ready && authenticated && (
+    <SketchShell
+      activeTab="game"
+      title="Play"
+      headerRight={
+        ready && authenticated ? (
           <button
             onClick={logout}
-            className="font-mono text-xs text-chalk/50 underline-offset-4 hover:underline"
+            className="font-mono text-[10px] uppercase tracking-[0.18em] text-bone/70 underline-offset-4 hover:text-bone hover:underline"
           >
             log out
           </button>
-        )}
-      </header>
-
-      <div className="relative z-10 mt-6 flex flex-col items-center text-center">
-        <h1 className="font-display text-4xl leading-none tracking-tight text-chalk sm:text-5xl">
-          HOODIE
-          <span className="text-mustard"> DROP</span>
-        </h1>
-        <p className="mt-3 max-w-[30ch] font-mono text-xs text-chalk/60">
-          catch the coins. dodge the rug bags. get on the ledger.
-        </p>
-      </div>
-
-      <div className="relative z-10 mt-8 w-full max-w-[400px]">
-        {!ready && (
-          <div className="flex justify-center py-16">
-            <p className="font-mono text-xs text-chalk/40">loading…</p>
+        ) : (
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-bone/45">not in</span>
+        )
+      }
+    >
+      {!ready && (
+        <SketchPanel eyebrow="status" title="Warming up" className="flex-1 min-h-0">
+          <div className="flex h-full min-h-[220px] items-center justify-center">
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-concrete">loading</p>
           </div>
-        )}
+        </SketchPanel>
+      )}
 
-        {ready && !authenticated && (
-          <div className="flex flex-col items-center gap-5 rounded-lg border border-chalk/10 bg-asphalt-deep/60 px-6 py-12">
-            <p className="max-w-[28ch] text-center font-mono text-xs leading-relaxed text-chalk/60">
-              log in with X to get a wallet and start playing. no seed phrase, no extension.
+      {ready && !authenticated && (
+        <SketchPanel eyebrow="Members only" title="Cop the drop" className="flex-1 min-h-0">
+          <div className="flex h-full min-h-[220px] flex-col items-center justify-center gap-6 text-center">
+            <p className="max-w-[24ch] font-body text-sm leading-relaxed text-ink-soft">
+              Sign in with X to lock in your best score and take a spot on the ranks.
             </p>
             <button
               onClick={login}
-              className="rounded bg-chalk px-6 py-3 font-display text-sm tracking-wide text-asphalt-deep transition-transform active:scale-95"
+              className="min-h-12 border-[3px] border-ink bg-blaze px-7 py-3 font-display text-base uppercase tracking-[0.08em] text-bone transition-transform active:translate-y-[1px]"
             >
-              LOG IN WITH X
+              Log in with X
             </button>
           </div>
-        )}
+        </SketchPanel>
+      )}
 
-        {ready && authenticated && (
-          <div className="flex flex-col items-center gap-6">
-            <div className="flex items-center gap-3 rounded-full border border-chalk/10 bg-asphalt-deep/60 px-4 py-2 font-mono text-xs text-chalk/70">
-              {xAccount?.username && <span className="text-mustard">@{xAccount.username}</span>}
-              {embeddedWallet?.address && (
-                <>
-                  <span className="text-chalk/20">·</span>
-                  <span>{shortenAddress(embeddedWallet.address)}</span>
-                </>
-              )}
-            </div>
-
+      {ready && authenticated && (
+        <SketchPanel eyebrow="Fit check" title="The drop" className="flex-1 min-h-0">
+          <div className="h-full">
             <Game />
           </div>
-        )}
-      </div>
-    </div>
+        </SketchPanel>
+      )}
+    </SketchShell>
   );
 }

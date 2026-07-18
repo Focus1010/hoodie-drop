@@ -1,0 +1,19 @@
+{
+  "accountAssociation": {
+    "header": "",
+    "payload": "",
+    "signature": ""
+  },
+  "miniapp": {
+    "version": "1",
+    "name": "Hoodie Drop",
+    "homeUrl": "https://hoodie-drop.example",
+    "iconUrl": "https://hoodie-drop.example/icon.png",
+    "splashImageUrl": "https://hoodie-drop.example/splash.png",
+    "splashBackgroundColor": "#1a1a1d",
+    "subtitle": "Catch coins, dodge rugs",
+    "description": "A mobile catcher game. Catch coins, dodge rug bags, climb the ledger.",
+    "primaryCategory": "games",
+    "tags": ["game", "arcade", "casual"]
+  }
+}

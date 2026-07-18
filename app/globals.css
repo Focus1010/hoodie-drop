@@ -1,41 +1,39 @@
 @import "tailwindcss";
 
 :root {
-  --color-asphalt: #1a1a1d;
-  --color-asphalt-deep: #0e0e10;
-  --color-mustard: #c8862b;
-  --color-hoodie-brown: #7a4e23;
-  --color-hoodie-brown-dark: #5c3a19;
-  --color-chalk: #ede9e2;
-  --color-signal-red: #d6462f;
+  /* Drop Culture palette: bone paper base, warm ink, one hot box-logo red. */
+  --color-ink: #16130f;
+  --color-ink-soft: #2a251d;
+  --color-bone: #e9e3d6;
+  --color-bone-dim: #d9d1c0;
+  --color-concrete: #79736a;
+  --color-blaze: #e5401f;
+  --color-gold: #c8862b;
+
+  /* Safe-area insets, defaulted to 0 so non-notch environments are unaffected. */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
 }
 
 @theme inline {
-  --color-asphalt: var(--color-asphalt);
-  --color-asphalt-deep: var(--color-asphalt-deep);
-  --color-mustard: var(--color-mustard);
-  --color-hoodie-brown: var(--color-hoodie-brown);
-  --color-hoodie-brown-dark: var(--color-hoodie-brown-dark);
-  --color-chalk: var(--color-chalk);
-  --color-signal-red: var(--color-signal-red);
+  --color-ink: var(--color-ink);
+  --color-ink-soft: var(--color-ink-soft);
+  --color-bone: var(--color-bone);
+  --color-bone-dim: var(--color-bone-dim);
+  --color-concrete: var(--color-concrete);
+  --color-blaze: var(--color-blaze);
+  --color-gold: var(--color-gold);
   --font-display: var(--font-display);
   --font-body: var(--font-body);
   --font-mono: var(--font-mono);
 }
 
 body {
-  background: var(--color-asphalt);
-  color: var(--color-chalk);
+  background-color: var(--color-bone);
+  color: var(--color-ink);
   font-family: var(--font-body), system-ui, sans-serif;
-  background-image:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(200, 134, 43, 0.08), transparent),
-    repeating-linear-gradient(
-      115deg,
-      rgba(255, 255, 255, 0.015) 0px,
-      rgba(255, 255, 255, 0.015) 1px,
-      transparent 1px,
-      transparent 3px
-    );
 }
 
 .font-display {
@@ -46,15 +44,98 @@ body {
   font-family: var(--font-mono), monospace;
 }
 
-/* subtle asphalt scuff streaks - the signature texture element */
-.scuff-streaks {
+/*
+ * Paper grain. A tiled SVG turbulence pattern gives the bone base the tooth of
+ * uncoated tag stock without any gradient. Very low opacity so it reads as
+ * material, not noise.
+ */
+.paper-grain {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image:
-    linear-gradient(100deg, transparent 20%, rgba(237, 233, 226, 0.025) 21%, transparent 23%),
-    linear-gradient(100deg, transparent 45%, rgba(237, 233, 226, 0.02) 46%, transparent 48%),
-    linear-gradient(100deg, transparent 68%, rgba(237, 233, 226, 0.03) 69%, transparent 71%);
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.09'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+/*
+ * Hang-tag. The signature framing device: every panel is a garment tag with a
+ * heavy ink keyline and squared corners, printed on bone stock.
+ */
+.tag {
+  position: relative;
+  border: 3px solid var(--color-ink);
+  background: var(--color-bone);
+  color: var(--color-ink);
+}
+
+/* Reinforced eyelet punched through the hero tag, plus the cotton string that
+ * runs up toward the masthead. Drawn with rings and a flat line, no gradient. */
+.tag-eyelet {
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  z-index: 2;
+  width: 18px;
+  height: 18px;
+  transform: translateX(-50%);
+  border-radius: 9999px;
+  border: 3px solid var(--color-ink);
+  background: var(--color-bone);
+  box-shadow: inset 0 0 0 2px var(--color-bone-dim);
+}
+
+.tag-string {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  z-index: 1;
+  width: 2px;
+  height: 24px;
+  transform: translateX(-50%);
+  background: var(--color-ink);
+}
+
+/* Masthead + nav bars share the ink block treatment. */
+.ink-bar {
+  border: 3px solid var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-bone);
+}
+
+.drop-tab {
+  display: flex;
+  min-height: 54px;
+  align-items: center;
+  justify-content: center;
+  border-right: 3px solid var(--color-bone);
+  font-family: var(--font-display), sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-bone);
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.drop-tab:last-child {
+  border-right: 0;
+}
+
+.drop-tab[data-active="true"] {
+  background: var(--color-blaze);
+  color: var(--color-bone);
+}
+
+.drop-tab:not([data-active="true"]):hover {
+  background: var(--color-ink-soft);
+}
+
+/* Visible keyboard focus everywhere, tuned to the palette. */
+:focus-visible {
+  outline: 3px solid var(--color-blaze);
+  outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
